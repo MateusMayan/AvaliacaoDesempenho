@@ -1,0 +1,19 @@
+.NavBar {
+  @apply h-dvh min-w-80 bg-blue-100 !important;
+}
+
+.Summary {
+  @apply text-blue-100 bg-blue-800 font-semibold !important;
+}
+
+.Summary div {
+  @apply justify-center !important;
+}
+
+.Details {
+  @apply bg-blue-400 text-blue-100 !important;
+}
+
+.Parametros {
+  @apply bg-blue-800 text-blue-100 rounded-s font-semibold;
+}

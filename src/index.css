@@ -12,3 +12,8 @@
 body {
   font-family: 'Fira Sans', sans-serif;
 }
+
+.MuiAccordion-region {
+  justify-content: center !important;
+  align-items: center;
+}

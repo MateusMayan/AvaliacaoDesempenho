@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header className="grid items-center grid-cols-3 py-2 bg-blue-950">
@@ -9,7 +10,9 @@ const Header = () => {
         Avaliação De Desempenho
       </section>
       <section>
-        <button className={styles.btn}>Login</button>
+        <Link to="/login">
+          <button className={styles.btn}>Login</button>
+        </Link>
       </section>
     </header>
   );
