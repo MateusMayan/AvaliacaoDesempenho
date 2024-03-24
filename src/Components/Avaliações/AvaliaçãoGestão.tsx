@@ -2,7 +2,7 @@ import React from 'react';
 
 const AvaliaçãoGestão = () => {
   return (
-    <div className="flex flex-col items-center col-span-7 col-start-2 bg-blue-50 ">
+    <div className="flex flex-col items-center grow bg-blue-50 ">
       <div className="flex flex-col p-10  gap-10">
         <h1 className="text-5xl font-bold text-blue-900 text-center">
           Avaliar Equipe

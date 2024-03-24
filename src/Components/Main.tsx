@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 
 const Main = () => {
   return (
-    <main className="grid grid-flow-col">
+    <main className="flex">
       <NavBar />
       <Routes>
         <Route path="/" element={<AvaliaçãoGestão />} />
