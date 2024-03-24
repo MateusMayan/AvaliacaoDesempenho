@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../Components/Form/Button';
 import Input from '../Components/Form/Input';
@@ -6,19 +6,18 @@ import Head from '../Components/Helper/Head';
 import useForm from '../Hooks/useForm';
 import { UserContext } from '../Context/UserContext';
 import Error from '../Components/Helper/Error';
+
 const LoginForm = () => {
   //LoginForm
-  const username = useForm();
-  const password = useForm();
+  const email = useForm('email');
+  const password = useForm('password');
   const { fazerLogin, error, loading } = React.useContext(UserContext);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (username.validate() && password.validate()) {
-      if (fazerLogin) {
-        fazerLogin(username.value, password.value);
-      }
+    if (email.validate() && password.validate()) {
+      fazerLogin && fazerLogin(email.value, password.value);
     }
   }
 
@@ -31,8 +30,14 @@ const LoginForm = () => {
           Faça seu login
         </h1>
         <form className="flex-col" onSubmit={handleSubmit}>
-          <Input label="Email:" type="text" name="username" {...username} />
-          <Input label="Senha:" type="password" name="password" {...password} />
+          <Input
+            autoComplete="on"
+            label="Email:"
+            type="text"
+            name="email"
+            {...email}
+          />
+          <Input name="password" type="password" label="Senha:" {...password} />
           {loading ? (
             <Button disabled>Carregando...</Button>
           ) : (
