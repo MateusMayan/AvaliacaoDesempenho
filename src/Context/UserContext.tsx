@@ -1,36 +1,25 @@
-import React, {
-  useEffect,
-  useState,
-  createContext,
-  ReactNode,
-  useContext,
-} from 'react';
+import React, { useState, createContext, ReactNode, useContext } from 'react';
 import {
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
-  getAuth,
+  setPersistence,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from 'firebase/auth';
 import { auth, db } from '../Firebase';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 interface UserContextType {
   uId: string | null;
-  login: any;
+  user: any | null;
   loading: boolean | null;
   error: string | null;
   children: ReactNode | null;
-  setLogin: Function | null;
   setUId: Function | null;
   fazerLogin: Function | null;
+  fazerLogout: Function | null;
   cadastrarUsuario: Function | null;
 }
 
@@ -38,21 +27,21 @@ export const useUser = () => useContext(UserContext);
 
 export const UserContext = createContext<UserContextType>({
   uId: null,
-  login: null,
+  user: null,
   loading: false,
   error: null,
   children: null,
-  setLogin: null,
   setUId: null,
   fazerLogin: null,
+  fazerLogout: null,
   cadastrarUsuario: null,
 });
 
 export const UserStorage: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const [user, setUser] = useState<object | null>(null);
   const [uId, setUId] = useState<string | null>(null);
-  const [login, setLogin] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -60,14 +49,17 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
   // Functions
   const fazerLogin = async (username: string, password: string) => {
     try {
+      setLoading(true);
+      await setPersistence(auth, browserSessionPersistence);
       const userCredential = await signInWithEmailAndPassword(
         auth,
         username,
         password,
       );
-      const user = userCredential.user;
-      setUId(user.uid);
-      navigate(`/account`);
+      const credentialUser = await userCredential.user;
+      setUser(credentialUser);
+      setUId(credentialUser.uid);
+      navigate('/main');
     } catch (error: any) {
       console.error('Error during login:', error.message);
       setError(error.message);
@@ -83,7 +75,6 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
   ) => {
     try {
       setLoading(true);
-      const auth = await getAuth();
       createUserWithEmailAndPassword(auth, email, password).then(
         async (userCredential) => {
           const userUID = userCredential.user.uid;
@@ -95,7 +86,7 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
           };
           await setDoc(userRef, userData);
           const userDoc = await getDoc(userRef);
-          userDoc && setLogin(userDoc.data());
+          console.log(userDoc);
           navigate('/account');
         },
       );
@@ -107,30 +98,36 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // React Function
-  useEffect(() => {
-    const getUserInfo = async () => {
-      const clientRef = collection(db, 'cliente');
-      const queryVar = query(clientRef, where('idCliente', '==', uId));
-      const querySnapshot = await getDocs(queryVar);
-      querySnapshot.forEach(async (doc) => {
-        setLogin(doc.data());
-      });
-    };
-    getUserInfo();
-  }, [uId]);
+  const fazerLogout = async () => {
+    try {
+      await signOut(auth);
+      setUId(null);
+      setUser(null);
+    } catch (error) {
+      window.alert('Logout Não Foi Concluído');
+    }
+  };
+
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        setUId(user.uid);
+      }
+    });
+  }, []);
 
   return (
     <UserContext.Provider
       value={{
         uId,
-        login,
+        user,
         loading,
         error,
         children,
-        setLogin,
         setUId,
         fazerLogin,
+        fazerLogout,
         cadastrarUsuario,
       }}
     >

@@ -1,6 +1,5 @@
 import React, { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './LoginForm.module.css';
 import Button from '../Components/Form/Button';
 import Input from '../Components/Form/Input';
 import Head from '../Components/Helper/Head';
@@ -24,11 +23,11 @@ const LoginForm = () => {
   }
 
   return (
-    <section className="m-auto p-5 md:w-96  my-32">
+    <section className="m-auto p-5 md:w-96 my-32">
       <Head title="Login" />
 
       <div>
-        <h1 className="text-3xl font-bold text-blue-950 mb-10 md:sm:text-5xl">
+        <h1 className="text-3xl font-bold text-blue-950 mb-10 sm:text-5xl">
           Faça seu login
         </h1>
         <form className="flex-col" onSubmit={handleSubmit}>
