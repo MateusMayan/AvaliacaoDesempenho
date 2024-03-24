@@ -14,7 +14,7 @@ const Header = () => {
       </section>
       {user && fazerLogout ? (
         <button
-          className="text-blue-300 border border-blue-300 rounded-md py-1 px-2 focus:bg-blue-900 hover:bg-blue-900 focus:outline-none hover:text-blue-200 focus:text-blue-200 focus:border-blue-500 hover:border-blue-500 "
+          className="text-blue-300 border border-blue-300 rounded-md py-1 px-2 focus:bg-blue-900 hover:bg-blue-900 focus:outline-none hover:text-blue-200 focus:text-blue-200 focus:border-blue-500 hover:border-blue-500 min-[800px]:right-40 min-[800px]:absolute"
           onClick={handleLogout}
         >
           Sair
