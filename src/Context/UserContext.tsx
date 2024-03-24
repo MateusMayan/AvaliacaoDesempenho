@@ -1,14 +1,7 @@
-import React, {
-  useState,
-  createContext,
-  ReactNode,
-  useContext,
-  MouseEventHandler,
-} from 'react';
+import React, { useState, createContext, ReactNode, useContext } from 'react';
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
-  getAuth,
   setPersistence,
   signInWithEmailAndPassword,
   onAuthStateChanged,
