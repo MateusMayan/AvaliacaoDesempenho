@@ -16,13 +16,13 @@ export default function NavBar() {
           Avaliação
         </AccordionSummary>
         <AccordionDetails className={styles.Details}>
-          <Link to="/avaliacaoGestao">Avaliação Gestão</Link>
+          <Link to="/main">Avaliação Gestão</Link>
         </AccordionDetails>
         <AccordionDetails className={styles.Details}>
-          <Link to="/avaliacaoPessoal">Avaliação Pessoal</Link>
+          <Link to="/main/avaliacaoPessoal">Avaliação Pessoal</Link>
         </AccordionDetails>
       </Accordion>
-      <Link to={'/parametros'}>
+      <Link to={'/main/parametros'}>
         <Accordion square>
           <AccordionDetails className={styles.Parametros}>
             Parâmetros
