@@ -8,7 +8,7 @@ const Main = () => {
     <main className="grid grid-flow-col">
       <NavBar />
       <Routes>
-        <Route path="/avaliacaoGestao" element={<AvaliaçãoGestão />} />
+        <Route path="/" element={<AvaliaçãoGestão />} />
       </Routes>
     </main>
   );
