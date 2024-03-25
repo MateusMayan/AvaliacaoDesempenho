@@ -5,23 +5,28 @@ interface InputRangeProps {
   name: string;
   id: string;
   value?: string;
+  onChange: (value: number) => void;
 }
 
 const InputRange: React.FC<InputRangeProps> = ({
   label,
   name,
   id,
+  value,
+  onChange,
   ...props
 }) => {
   const [color, setColor] = React.useState('#FF0B0B');
-  const [value, setValue] = React.useState('1');
+  const [rangeValue, setRangeValue] = React.useState('1');
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+  const handleModifyValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setRangeValue(newValue);
+    onChange(parseInt(newValue));
   };
 
   React.useEffect(() => {
-    switch (value) {
+    switch (rangeValue) {
       case '1':
         setColor('#FF0B0B');
         break;
@@ -40,14 +45,14 @@ const InputRange: React.FC<InputRangeProps> = ({
       default:
         setColor('');
     }
-  }, [value]);
+  }, [rangeValue]);
 
   return (
     <div className="flex flex-col gap-2 mt-3">
       <label htmlFor={name} className="text-blue-950">
         {label}
       </label>
-      <span className="text-sm font-medium text-blue-800">{value}</span>
+      <span className="text-sm font-medium text-blue-800">{rangeValue}</span>
       <input
         style={{
           WebkitAppearance: 'none',
@@ -65,8 +70,8 @@ const InputRange: React.FC<InputRangeProps> = ({
         min={1}
         max={5}
         step={1}
-        onChange={onChange}
-        value={value}
+        value={rangeValue}
+        onChange={handleModifyValue}
       />
     </div>
   );
