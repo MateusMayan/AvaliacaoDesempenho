@@ -1,14 +1,14 @@
 import React from 'react';
 import NavBar from './NavBar';
-import AvaliaçãoGestão from './Avaliações/AvaliaçãoGestão';
+import AvaliacaoGestao from './Avaliações/AvaliaçaoGestao';
 import { Route, Routes } from 'react-router-dom';
 
 const Main = () => {
   return (
-    <main className="grid grid-flow-col">
+    <main className="flex max-[500px]:flex-col">
       <NavBar />
       <Routes>
-        <Route path="/" element={<AvaliaçãoGestão />} />
+        <Route path="/" element={<AvaliacaoGestao />} />
       </Routes>
     </main>
   );

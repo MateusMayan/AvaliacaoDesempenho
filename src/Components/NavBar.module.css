@@ -1,9 +1,9 @@
 .NavBar {
-  @apply h-dvh bg-blue-100 !important;
+  @apply min-[500px]:h-dvh bg-blue-100  !important;
 }
 
 .Summary {
-  @apply text-blue-100 bg-blue-800 font-semibold !important;
+  @apply text-blue-100 bg-blue-800 font-semibold  !important;
 }
 
 .Summary div {
@@ -11,9 +11,9 @@
 }
 
 .Details {
-  @apply bg-blue-400 text-blue-100 !important;
+  @apply bg-blue-400 text-blue-100 text-center !important;
 }
 
 .Parametros {
-  @apply bg-blue-800 text-blue-100 rounded-s font-semibold;
+  @apply bg-blue-800 text-blue-100 rounded-s font-semibold text-center;
 }
