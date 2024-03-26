@@ -4,7 +4,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import { Link } from 'react-router-dom';
 import styles from './NavBar.module.css';
+import { useUser } from '../Context/UserContext';
 export default function NavBar() {
+  const { user } = useUser();
+
   return (
     <div className={styles.NavBar}>
       <Accordion disableGutters square className={styles.Accordion} expanded>
@@ -15,9 +18,11 @@ export default function NavBar() {
         >
           Avaliação
         </AccordionSummary>
-        <AccordionDetails className={styles.Details}>
-          <Link to="/main">Avaliação Gestão</Link>
-        </AccordionDetails>
+        {user.Cargo === 'Admin' && (
+          <AccordionDetails className={styles.Details}>
+            <Link to="/main">Avaliar Equipe</Link>
+          </AccordionDetails>
+        )}
         <AccordionDetails className={styles.Details}>
           <Link to="/main/avaliacaoPessoal">Avaliação Pessoal</Link>
         </AccordionDetails>
@@ -29,6 +34,15 @@ export default function NavBar() {
           </AccordionDetails>
         </Accordion>
       </Link>
+      {user.Cargo === 'Admin' && (
+        <Link to={'/main/register'}>
+          <Accordion square>
+            <AccordionDetails className={styles.Parametros}>
+              Cadastrar Funcionário
+            </AccordionDetails>
+          </Accordion>
+        </Link>
+      )}
     </div>
   );
 }
