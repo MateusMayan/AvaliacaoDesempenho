@@ -48,6 +48,10 @@ const AvaliacaoGestao = () => {
     setWeek(e.target.value);
   };
 
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   React.useEffect(() => {
     const calcularTotal = () => {
       let sum = 0;
@@ -76,7 +80,10 @@ const AvaliacaoGestao = () => {
   }, [valores, percentage]);
 
   return (
-    <form className="flex flex-col items-center grow bg-blue-50 ">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center grow bg-blue-50 "
+    >
       <div className="flex flex-col p-10  gap-10">
         <h1 className="text-5xl font-bold text-blue-900 text-center">
           Avaliar Equipe
@@ -91,8 +98,8 @@ const AvaliacaoGestao = () => {
             </option>
             {employees !== undefined &&
               employees?.map((doc) => (
-                <option key={doc} value={doc}>
-                  {doc}
+                <option key={doc.Nome} value={doc.Id}>
+                  {doc.Nome}
                 </option>
               ))}
           </select>
@@ -180,14 +187,16 @@ const AvaliacaoGestao = () => {
                     handleInputChange('gestao_processos', value)
                   }
                 />
-                <InputRange
-                  label="Gestão de Equipe: "
-                  name="gestao-equipe"
-                  id="gestao-equipe"
-                  onChange={(value) =>
-                    handleInputChange('gestao_equipe', value)
-                  }
-                />
+                {
+                  <InputRange
+                    label="Gestão de Equipe: "
+                    name="gestao-equipe"
+                    id="gestao-equipe"
+                    onChange={(value) =>
+                      handleInputChange('gestao_equipe', value)
+                    }
+                  />
+                }
               </div>
             </div>
           </div>
