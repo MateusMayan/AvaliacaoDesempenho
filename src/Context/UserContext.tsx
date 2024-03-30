@@ -18,6 +18,13 @@ import {
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
+interface EmployeesProps {
+  Nome: string;
+  Email: string;
+  Cargo: string;
+  Id: string;
+}
+
 interface UserContextType {
   uId: string | null;
   user: any | undefined;
@@ -28,7 +35,7 @@ interface UserContextType {
   fazerLogin: Function | null;
   fazerLogout: Function | null;
   cadastrarUsuario: Function | null;
-  employees: Array<string> | null;
+  employees: EmployeesProps[] | null;
 }
 
 export const useUser = () => useContext(UserContext);
@@ -51,11 +58,11 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<DocumentData | undefined>();
   const [uId, setUId] = useState<string | null>(null);
-  const [employees, setEmployees] = useState<string[]>([]);
+  const [employees, setEmployees] = useState<EmployeesProps[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const employeesRef = collection(db, 'employees');
+
   // Functions
   const fazerLogin = async (username: string, password: string) => {
     try {
@@ -71,10 +78,11 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
       const docRef = doc(db, 'employees', credentialUser.uid);
       const docSnap = await getDoc(docRef);
       setUser(docSnap.data());
+      const employeesRef = collection(db, 'employees');
       const querySnapShot = await getDocs(employeesRef);
-      const newEmployees: string[] = [];
+      const newEmployees: EmployeesProps[] = [];
       querySnapShot.forEach((doc) => {
-        newEmployees.push(doc.data().Nome);
+        newEmployees.push(doc.data() as EmployeesProps);
       });
       setEmployees(newEmployees);
       navigate('/main');
@@ -102,11 +110,11 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
             Nome: name,
             Email: email,
             Cargo: cargo,
+            Id: userUID,
           };
           await setDoc(userRef, userData);
           const userDoc = await getDoc(userRef);
           console.log(userDoc);
-          navigate('/main');
         },
       );
     } catch (error: Error | any) {
@@ -128,21 +136,25 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
   };
 
   React.useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, 'employees', user.uid);
-        const docSnap = await getDoc(docRef);
-        setUser(docSnap.data());
-        setUId(user.uid);
-        const querySnapShot = await getDocs(employeesRef);
-        const newEmployees: string[] = [];
-        querySnapShot.forEach((doc) => {
-          newEmployees.push(doc.data().Nome);
-        });
-        setEmployees(newEmployees);
-      }
-    });
-  }, [employeesRef]);
+    const fetchData = async () => {
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const docRef = doc(db, 'employees', user.uid);
+          const docSnap = await getDoc(docRef);
+          setUser(docSnap.data());
+          setUId(user.uid);
+          const employeesRef = collection(db, 'employees');
+          const querySnapShot = await getDocs(employeesRef);
+          const newEmployees: EmployeesProps[] = [];
+          querySnapShot.forEach((doc) => {
+            newEmployees.push(doc.data() as EmployeesProps);
+          });
+          setEmployees(newEmployees);
+        }
+      });
+    };
+    fetchData();
+  }, []);
 
   return (
     <UserContext.Provider

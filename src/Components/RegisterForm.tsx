@@ -9,7 +9,7 @@ import Error from './Helper/Error';
 const RegisterForm = () => {
   //RegisterForm
   const nome = useForm();
-  const [cargo, setCargo] = useState('');
+  const [cargo, setCargo] = useState('Admin');
   const email = useForm('email');
   const password = useForm('password');
   const { cadastrarUsuario, error, loading } = React.useContext(UserContext);
@@ -49,11 +49,14 @@ const RegisterForm = () => {
           <select
             className="block mb-5 w-full bg-gray-300 rounded-md py-1 px-2 duration-200 border focus:outline-none focus:border-blue-400 focus:shadow-sm focus:shadow-blue-100 focus:bg-gray-100 text-sky-700"
             name="Cargo"
+            defaultValue="Admin"
             onChange={handleSelectCargo}
           >
             <option value="Admin">Admin</option>
-            <option value="Equipe">Equipe</option>
-            <option value="Gestão">Gestão</option>
+            <option value="Design">Design</option>
+            <option value="Comercial">Comercial</option>
+            <option value="Gestão Design">Gestão Design</option>
+            <option value="Gestão Comercial">Gestão Comercial</option>
           </select>
 
           <Input
@@ -65,9 +68,9 @@ const RegisterForm = () => {
           />
           <Input name="password" type="password" label="Senha:" {...password} />
           {loading ? (
-            <Button disabled>Carregando...</Button>
+            <Button disabled>Cadastrando...</Button>
           ) : (
-            <Button>Entrar</Button>
+            <Button>Cadastrar</Button>
           )}
           <Error error={error && 'Dados incorretos.'} />
         </form>
