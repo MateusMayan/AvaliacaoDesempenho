@@ -62,7 +62,6 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-
   // Functions
   const fazerLogin = async (username: string, password: string) => {
     try {
@@ -78,6 +77,8 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
       const docRef = doc(db, 'employees', credentialUser.uid);
       const docSnap = await getDoc(docRef);
       setUser(docSnap.data());
+      const userData = JSON.stringify(docSnap.data());
+      localStorage.setItem('userData', userData);
       const employeesRef = collection(db, 'employees');
       const querySnapShot = await getDocs(employeesRef);
       const newEmployees: EmployeesProps[] = [];
@@ -130,31 +131,29 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
       await signOut(auth);
       setUId(null);
       setUser(undefined);
+      localStorage.clear();
     } catch (error) {
       window.alert('Logout Não Foi Concluído');
     }
   };
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const docRef = doc(db, 'employees', user.uid);
-          const docSnap = await getDoc(docRef);
-          setUser(docSnap.data());
-          setUId(user.uid);
-          const employeesRef = collection(db, 'employees');
-          const querySnapShot = await getDocs(employeesRef);
-          const newEmployees: EmployeesProps[] = [];
-          querySnapShot.forEach((doc) => {
-            newEmployees.push(doc.data() as EmployeesProps);
-          });
-          setEmployees(newEmployees);
-        }
-      });
-    };
+    async function fetchData() {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        setUser(JSON.parse(userData));
+        user && setUId(user.Id);
+        const employeesRef = collection(db, 'employees');
+        const querySnapShot = await getDocs(employeesRef);
+        const newEmployees: EmployeesProps[] = [];
+        querySnapShot.forEach((doc) => {
+          newEmployees.push(doc.data() as EmployeesProps);
+        });
+        setEmployees(newEmployees);
+      }
+    }
     fetchData();
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider
