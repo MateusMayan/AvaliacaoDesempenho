@@ -4,7 +4,6 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
 } from 'firebase/auth';
 import { auth, db } from '../Firebase';
