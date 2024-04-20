@@ -28,6 +28,7 @@ const AvaliacaoGestao = () => {
   const { employees } = useUser();
   const [progressBar, setProgressBar] = React.useState('');
   const [percentage, setPercentage] = React.useState(0);
+  const [observacao, setObservacao] = React.useState('');
   const [employee, setEmployee] = React.useState('');
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
@@ -50,6 +51,10 @@ const AvaliacaoGestao = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+  };
+
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setObservacao(e.target.value);
   };
 
   React.useEffect(() => {
@@ -198,6 +203,16 @@ const AvaliacaoGestao = () => {
                   />
                 }
               </div>
+              <h4 className="text-blue-950 mb-3">Observações:</h4>
+              <textarea
+                name="textarea"
+                id="textarea"
+                placeholder="Digite suas observações aqui"
+                cols={100}
+                rows={10}
+                className="px-2 py-1 resize-none outline-none focus:border-cyan-900 border rounded-lg"
+                onChange={handleTextArea}
+              />
             </div>
           </div>
           <Button>Enviar</Button>
