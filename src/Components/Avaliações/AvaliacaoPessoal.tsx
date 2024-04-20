@@ -1,7 +1,6 @@
 import React from 'react';
 import InputRange from '../Form/InputRange';
 import Button from '../Form/Button';
-import { useUser } from '../../Context/UserContext';
 
 interface Valores {
   entrega: number;
@@ -14,7 +13,7 @@ interface Valores {
   gestao_equipe: number;
 }
 
-const AvaliacaoGestao = () => {
+const AvaliacaoPessoal = () => {
   const [valores, setValores] = React.useState<Valores>({
     entrega: 0,
     proatividade: 0,
@@ -25,20 +24,11 @@ const AvaliacaoGestao = () => {
     gestao_processos: 0,
     gestao_equipe: 0,
   });
-  const { employees } = useUser();
   const [progressBar, setProgressBar] = React.useState('');
   const [percentage, setPercentage] = React.useState(0);
-  const [employee, setEmployee] = React.useState('');
+  const [observacao, setObservacao] = React.useState('');
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
-
-  const handleInputChange = (name: keyof Valores, value: number) => {
-    setValores({ ...valores, [name]: value });
-  };
-
-  const handleSelectEmployee = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEmployee(e.target.value);
-  };
 
   const handleInputMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMonth(e.target.value);
@@ -58,7 +48,7 @@ const AvaliacaoGestao = () => {
       for (const key in valores) {
         sum += valores[key as keyof Valores];
       }
-      const maxPossible = Object.keys(valores).length * 4; // O máximo possível é 4 para cada critério
+      const maxPossible = Object.keys(valores).length * 4; //  O máximo possível é 4 para cada critério
       const average = sum / maxPossible;
       setPercentage(parseFloat((average * 100).toFixed(1)));
 
@@ -79,6 +69,14 @@ const AvaliacaoGestao = () => {
     calcularTotal();
   }, [valores, percentage]);
 
+  const handleInputChange = (name: keyof Valores, value: number) => {
+    setValores({ ...valores, [name]: value });
+  };
+
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setObservacao(e.target.value);
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -86,23 +84,9 @@ const AvaliacaoGestao = () => {
     >
       <div className="flex flex-col p-10  gap-10">
         <h1 className="text-5xl font-bold text-blue-900 text-center">
-          Avaliar Equipe
+          Avaliação Pessoal
         </h1>
         <div className="flex gap-3 max-[800px]:flex-col">
-          <select
-            onChange={handleSelectEmployee}
-            className="bg-blue-100 p-2 h-14 rounded-md"
-          >
-            <option className="bg-blue-100" selected disabled>
-              Quem você quer avaliar?
-            </option>
-            {employees !== undefined &&
-              employees?.map((doc) => (
-                <option key={doc.Nome} value={doc.Id}>
-                  {doc.Nome}
-                </option>
-              ))}
-          </select>
           <input
             type="month"
             onChange={handleInputMonth}
@@ -123,7 +107,7 @@ const AvaliacaoGestao = () => {
         </div>
       </div>
 
-      {week && employee && month && (
+      {week && month && (
         <>
           <div
             style={{ background: progressBar }}
@@ -198,6 +182,16 @@ const AvaliacaoGestao = () => {
                   />
                 }
               </div>
+              <h4 className="text-blue-950 mb-3">Observações:</h4>
+              <textarea
+                name="textarea"
+                id="textarea"
+                placeholder="Digite suas observações aqui"
+                cols={100}
+                rows={10}
+                className="px-2 py-1 resize-none outline-none focus:border-cyan-900 border rounded-lg"
+                onChange={handleTextArea}
+              />
             </div>
           </div>
           <Button>Enviar</Button>
@@ -206,4 +200,5 @@ const AvaliacaoGestao = () => {
     </form>
   );
 };
-export default AvaliacaoGestao;
+
+export default AvaliacaoPessoal;

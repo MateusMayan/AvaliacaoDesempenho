@@ -17,7 +17,7 @@ const InputRange: React.FC<InputRangeProps> = ({
   ...props
 }) => {
   const [color, setColor] = React.useState('#FF0B0B');
-  const [rangeValue, setRangeValue] = React.useState('1');
+  const [rangeValue, setRangeValue] = React.useState('0');
 
   const handleModifyValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -27,19 +27,19 @@ const InputRange: React.FC<InputRangeProps> = ({
 
   React.useEffect(() => {
     switch (rangeValue) {
-      case '1':
+      case '0':
         setColor('#FF0B0B');
         break;
-      case '2':
+      case '1':
         setColor('#FF7610');
         break;
-      case '3':
+      case '2':
         setColor('#FFE315');
         break;
-      case '4':
+      case '3':
         setColor('#B3EF1C');
         break;
-      case '5':
+      case '4':
         setColor('#2EFD28');
         break;
       default:
@@ -67,8 +67,8 @@ const InputRange: React.FC<InputRangeProps> = ({
         type="range"
         name={name}
         id={name}
-        min={1}
-        max={5}
+        min={0}
+        max={4}
         step={1}
         value={rangeValue}
         onChange={handleModifyValue}

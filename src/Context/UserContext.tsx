@@ -4,7 +4,6 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
 } from 'firebase/auth';
 import { auth, db } from '../Firebase';
@@ -141,8 +140,9 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
     async function fetchData() {
       const userData = localStorage.getItem('userData');
       if (userData) {
-        setUser(JSON.parse(userData));
-        user && setUId(user.Id);
+        const parsedUserData = JSON.parse(userData);
+        setUser(parsedUserData);
+        setUId(parsedUserData.Id);
         const employeesRef = collection(db, 'employees');
         const querySnapShot = await getDocs(employeesRef);
         const newEmployees: EmployeesProps[] = [];
@@ -153,7 +153,7 @@ export const UserStorage: React.FC<{ children: ReactNode }> = ({
       }
     }
     fetchData();
-  }, [user]);
+  }, []);
 
   return (
     <UserContext.Provider
