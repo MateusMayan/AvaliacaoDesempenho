@@ -33,6 +33,10 @@ const AvaliacaoGestao = () => {
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
 
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   const handleInputChange = (name: keyof Valores, value: number) => {
     setValores({ ...valores, [name]: value });
   };
@@ -47,10 +51,6 @@ const AvaliacaoGestao = () => {
 
   const handleSelectWeek = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setWeek(e.target.value);
-  };
-
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
   };
 
   const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -30,6 +30,10 @@ const AvaliacaoPessoal = () => {
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
 
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   const handleInputMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMonth(e.target.value);
   };
@@ -38,8 +42,12 @@ const AvaliacaoPessoal = () => {
     setWeek(e.target.value);
   };
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleInputChange = (name: keyof Valores, value: number) => {
+    setValores({ ...valores, [name]: value });
+  };
+
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setObservacao(e.target.value);
   };
 
   React.useEffect(() => {
@@ -68,14 +76,6 @@ const AvaliacaoPessoal = () => {
 
     calcularTotal();
   }, [valores, percentage]);
-
-  const handleInputChange = (name: keyof Valores, value: number) => {
-    setValores({ ...valores, [name]: value });
-  };
-
-  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setObservacao(e.target.value);
-  };
 
   return (
     <form
