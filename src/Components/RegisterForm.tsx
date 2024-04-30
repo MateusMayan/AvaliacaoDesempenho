@@ -11,15 +11,14 @@ const RegisterForm = () => {
   const nome = useForm();
   const [cargo, setCargo] = useState('Admin');
   const email = useForm('email');
-  const password = useForm('password');
   const { cadastrarUsuario, error, loading } = React.useContext(UserContext);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (email.validate() && password.validate()) {
+    if (email.validate()) {
       cadastrarUsuario &&
-        cadastrarUsuario(nome.value, cargo, email.value, password.value);
+        cadastrarUsuario(nome.value, cargo, email.value, 'Grupomev2024');
     }
   }
 
@@ -66,7 +65,6 @@ const RegisterForm = () => {
             name="email"
             {...email}
           />
-          <Input name="password" type="password" label="Senha:" {...password} />
           {loading ? (
             <Button disabled>Cadastrando...</Button>
           ) : (
