@@ -4,6 +4,8 @@ import AvaliacaoGestao from './Avaliações/AvaliaçaoGestao';
 import { Route, Routes } from 'react-router-dom';
 import RegisterForm from './RegisterForm';
 import AvaliacaoPessoal from './Avaliações/AvaliacaoPessoal';
+import EditarGestao from './Avaliações/EditarGestao';
+import EditarPessoal from './Avaliações/EditarPessoal';
 
 const Main = () => {
   return (
@@ -13,6 +15,8 @@ const Main = () => {
         <Route path="/" element={<AvaliacaoGestao />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/avaliacaoPessoal" element={<AvaliacaoPessoal />} />
+        <Route path="/edicaoEquipe" element={<EditarGestao />} />
+        <Route path="/edicaoPessoal" element={<EditarPessoal />} />
       </Routes>
     </main>
   );
