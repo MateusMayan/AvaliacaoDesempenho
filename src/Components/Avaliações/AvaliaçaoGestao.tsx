@@ -2,6 +2,8 @@ import React from 'react';
 import InputRange from '../Form/InputRange';
 import Button from '../Form/Button';
 import { useUser } from '../../Context/UserContext';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../Firebase';
 
 interface Valores {
   entrega: number;
@@ -25,19 +27,40 @@ const AvaliacaoGestao = () => {
     gestao_processos: 0,
     gestao_equipe: 0,
   });
-  const { employees } = useUser();
+  const { employees, user } = useUser();
   const [progressBar, setProgressBar] = React.useState('');
   const [percentage, setPercentage] = React.useState(0);
-  const [employee, setEmployee] = React.useState('');
+  const [observacao, setObservacao] = React.useState('');
+  const [employee, setEmployee] = React.useState({ Nome: '', Id: '' });
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
+
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    user &&
+      (await setDoc(
+        doc(db, 'avalicaoGestao', employee.Nome),
+        {
+          [month]: {
+            [week]: {
+              valores,
+              observacoes: observacao,
+            },
+          },
+        },
+        { merge: true },
+      ));
+    window.alert('Avaliação finalizada!');
+  };
 
   const handleInputChange = (name: keyof Valores, value: number) => {
     setValores({ ...valores, [name]: value });
   };
 
   const handleSelectEmployee = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEmployee(e.target.value);
+    const idSelecionado = e.target.options[e.target.selectedIndex].id;
+    const valueSelecionado = e.target.value;
+    setEmployee({ Id: valueSelecionado, Nome: idSelecionado });
   };
 
   const handleInputMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,8 +71,8 @@ const AvaliacaoGestao = () => {
     setWeek(e.target.value);
   };
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setObservacao(e.target.value);
   };
 
   React.useEffect(() => {
@@ -91,14 +114,14 @@ const AvaliacaoGestao = () => {
         <div className="flex gap-3 max-[800px]:flex-col">
           <select
             onChange={handleSelectEmployee}
-            className="bg-blue-100 p-2 h-14 rounded-md"
+            className="bg-blue-100 p-2 h-14 rounded-md select"
           >
             <option className="bg-blue-100" selected disabled>
               Quem você quer avaliar?
             </option>
             {employees !== undefined &&
               employees?.map((doc) => (
-                <option key={doc.Nome} value={doc.Id}>
+                <option key={doc.Nome} value={doc.Id} id={doc.Nome}>
                   {doc.Nome}
                 </option>
               ))}
@@ -115,10 +138,10 @@ const AvaliacaoGestao = () => {
             <option className="bg-blue-100" selected disabled>
               Qual semana?
             </option>
-            <option value="1">Semana 1</option>
-            <option value="2">Semana 2</option>
-            <option value="3">Semana 3</option>
-            <option value="4">Semana 4</option>
+            <option value="Semana 1">Semana 1</option>
+            <option value="Semana 2">Semana 2</option>
+            <option value="Semana 3">Semana 3</option>
+            <option value="Semana 4">Semana 4</option>
           </select>
         </div>
       </div>
@@ -198,6 +221,16 @@ const AvaliacaoGestao = () => {
                   />
                 }
               </div>
+              <h4 className="text-blue-950 mb-3">Observações:</h4>
+              <textarea
+                name="textarea"
+                id="textarea"
+                placeholder="Digite suas observações aqui"
+                cols={100}
+                rows={10}
+                className="px-2 py-1 resize-none outline-none focus:border-cyan-900 border rounded-lg"
+                onChange={handleTextArea}
+              />
             </div>
           </div>
           <Button>Enviar</Button>
