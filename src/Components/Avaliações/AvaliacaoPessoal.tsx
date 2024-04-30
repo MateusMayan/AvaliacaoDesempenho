@@ -1,6 +1,9 @@
 import React from 'react';
 import InputRange from '../Form/InputRange';
 import Button from '../Form/Button';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../Firebase';
+import { UserContext } from '../../Context/UserContext';
 
 interface Valores {
   entrega: number;
@@ -29,9 +32,26 @@ const AvaliacaoPessoal = () => {
   const [observacao, setObservacao] = React.useState('');
   const [week, setWeek] = React.useState('');
   const [month, setMonth] = React.useState('');
+  const { user } = React.useContext(UserContext);
 
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    user &&
+      (await setDoc(
+        doc(db, 'employees', user.Id),
+        {
+          avaliacaoPessoal: {
+            [month]: {
+              [week]: {
+                valores,
+                observacoes: observacao,
+              },
+            },
+          },
+        },
+        { merge: true },
+      ));
+    window.alert('Avaliação finalizada!');
   };
 
   const handleInputMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +100,7 @@ const AvaliacaoPessoal = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col items-center grow bg-blue-50 "
+      className="flex flex-col items-center grow bg-blue-50"
     >
       <div className="flex flex-col p-10  gap-10">
         <h1 className="text-5xl font-bold text-blue-900 text-center">
@@ -99,10 +119,10 @@ const AvaliacaoPessoal = () => {
             <option className="bg-blue-100" selected disabled>
               Qual semana?
             </option>
-            <option value="1">Semana 1</option>
-            <option value="2">Semana 2</option>
-            <option value="3">Semana 3</option>
-            <option value="4">Semana 4</option>
+            <option value="Semana 1">Semana 1</option>
+            <option value="Semana 2">Semana 2</option>
+            <option value="Semana 3">Semana 3</option>
+            <option value="Semana 4">Semana 4</option>
           </select>
         </div>
       </div>
