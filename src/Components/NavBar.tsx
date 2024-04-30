@@ -11,21 +11,42 @@ export default function NavBar() {
   return (
     <div className={styles.NavBar}>
       <Accordion disableGutters square className={styles.Accordion} expanded>
-        <AccordionSummary
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-          className={styles.Summary}
-        >
-          Avaliação
-        </AccordionSummary>
         {user.Cargo === 'Admin' && (
-          <AccordionDetails className={styles.Details}>
-            <Link to="/main">Avaliar Equipe</Link>
-          </AccordionDetails>
+          <>
+            <AccordionSummary
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+              className={styles.Summary}
+            >
+              Avaliação Equipe
+            </AccordionSummary>
+
+            <AccordionDetails className={styles.Details}>
+              <Link to="/main">Realizar Avaliação</Link>
+            </AccordionDetails>
+
+            <AccordionDetails className={styles.Details}>
+              <Link to="/main/edicaoEquipe">Editar Avaliação</Link>
+            </AccordionDetails>
+          </>
         )}
-        <AccordionDetails className={styles.Details}>
-          <Link to="/main/avaliacaoPessoal">Avaliação Pessoal</Link>
-        </AccordionDetails>
+        <>
+          <AccordionSummary
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+            className={styles.Summary}
+          >
+            Avaliação Pessoal
+          </AccordionSummary>
+
+          <AccordionDetails className={styles.Details}>
+            <Link to="/main/avaliacaoPessoal">Realizar Avaliação</Link>
+          </AccordionDetails>
+
+          <AccordionDetails className={styles.Details}>
+            <Link to="/main/edicaoPessoal">Editar Avaliação</Link>
+          </AccordionDetails>
+        </>
       </Accordion>
       <Link to={'/main/parametros'}>
         <Accordion square>
