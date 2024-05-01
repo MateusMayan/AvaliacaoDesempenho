@@ -39,9 +39,9 @@ const AvaliacaoGestao = () => {
     e.preventDefault();
     user &&
       (await setDoc(
-        doc(db, 'avalicaoGestao', employee.Nome),
+        doc(db, 'avaliacaoGestao', month),
         {
-          [month]: {
+          [employee.Id]: {
             [week]: {
               valores,
               observacoes: observacao,

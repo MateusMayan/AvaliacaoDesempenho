@@ -38,7 +38,7 @@ const AvaliacaoPessoal = () => {
     e.preventDefault();
     user &&
       (await setDoc(
-        doc(db, 'employees', user.Id),
+        doc(db, 'avaliacaoPessoal', user.Id),
         {
           avaliacaoPessoal: {
             [month]: {
